@@ -11,11 +11,38 @@ require('admin-lte');
 
 
 window.Vue = require('vue').default;
-
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import { Form, HasError, AlertError } from 'vform'
+import VueProgressBar from 'vue-progressbar'
+import Swal from 'sweetalert2'
+// import { vue } from 'laravel-mix';
+
+
+// CommonJS
 
 Vue.use(VueRouter)
+Vue.use(require('vue-moment'));
+Vue.component(HasError.name, HasError)
+Vue.component(AlertError.name, AlertError)
+window.Form=Form;
+window.swal=Swal;
+window.Fire=new Vue();
+
+
+const toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  })
+  window.toast=toast;
+
 
 let routes = [
     { path:'/dashboard', component:  require('./components/Dashboard.vue').default},
@@ -28,7 +55,11 @@ let routes = [
     mode: 'history',
     routes // short for `routes: routes`
   })
-
+  Vue.use(VueProgressBar, {
+    color: 'rgb(143, 255, 199)',
+    failedColor: 'red',
+    height: '3px'
+  })
 
 
 /**
@@ -52,5 +83,13 @@ let routes = [
 
 const app = new Vue({
     el: '#app',
-    router
+    router,
+     methods: {
+    login () {
+      // Submit the form via a POST request
+      this.form.post('/login')
+        .then(({ data }) => { console.log(data) })
+    }
+  }
+ 
 });
