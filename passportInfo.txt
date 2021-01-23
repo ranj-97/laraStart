@@ -1,0 +1,17 @@
+
+
+Personal access client created successfully.
+Client ID: 1
+Client secret: Q4DOyDV4cqKoiPBjzDBzZ2fKX5TPJ9eYWEg6deI4
+Password grant client created successfully.
+Client ID: 2
+Client secret: a3YrRaZyYuOVNGPZrifQdHd64riBRnfzcq03f6EU
+
+
+
+Client ID: 3
+Client secret: mMqidDT8sfRo3z7s5j2oTMOgoaaR8vxzqe25uHRC
+Password grant client created successfully.
+Client ID: 4
+Client secret: QS9GLj7c1BIjzerubAbbeyf64gfGjJUoitrzGjir
+PS D:\laravel\projects\test\laraStart>

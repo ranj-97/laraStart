@@ -9,6 +9,18 @@ use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
+
+/**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -29,7 +41,7 @@ class UsersController extends Controller
     {
          $request->validate([
             'name' => 'required|string|max:191',
-            'email' => 'required|unique:users|email|string|max:255',
+            'email' => 'required|email|string|max:255|unique:users,email',
             'password' => 'required|string|min:8',
 
         ]);
@@ -53,6 +65,16 @@ class UsersController extends Controller
     {
         //
     }
+     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function profile()
+    {
+        return auth('api')->user();
+    }
 
     /**
      * Update the specified resource in storage.
@@ -63,7 +85,16 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user=User::findorFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:191',
+            'email' => 'required|email|string|max:191|unique:users,email,'.$user->id,
+            'password' => 'sometimes|string|min:8',
+
+        ]);
+        $user->update($request->all());
+        return ["message"=>"Updated User Info"];
     }
 
     /**
@@ -74,9 +105,10 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
+
         $data=User::findorFail($id);
         $data->delete();
 
-        return ["message"=>'User Deleted Successfully'];
+        return response()->json('user deleted');
     }
 }
