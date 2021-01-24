@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Intervention\Image\Facades\Image;
 
 class UsersController extends Controller
 {
@@ -75,6 +76,38 @@ class UsersController extends Controller
     {
         return auth('api')->user();
     }
+    public function updateProfile(Request $request){
+        $user= auth('api')->user();
+        
+        $request->validate([
+            'name' => 'required|string|max:191',
+            'email' => 'required|email|string|max:191|unique:users,email,'.$user->id,
+            'password' => 'sometimes|required|string|min:8',
+
+        ]);
+
+        
+            $currentPhoto=$user->photo;
+            if ($request->photo != $currentPhoto) {
+                $photoName=time().'.'.explode('/',explode(':',substr($request->photo,0,strpos
+                ($request->photo,';')))[1])[1];
+                Image::make($request->photo)->save(public_path("img/profile/").$photoName);
+                $request->merge(['photo'=>$photoName]);
+
+                 $profilePhoto=public_path("img/profile/").$currentPhoto;
+
+                 if (file_exists($profilePhoto)) {
+                     @unlink($profilePhoto);
+                 }
+
+            }
+            if (!empty($request->password)) {
+                $request->merge(['password'=> Hash::make($request['password'])]);
+            }
+
+            $user->update($request->all());
+         return ['message'=>'success'];
+    }
 
     /**
      * Update the specified resource in storage.
@@ -90,7 +123,7 @@ class UsersController extends Controller
         $request->validate([
             'name' => 'required|string|max:191',
             'email' => 'required|email|string|max:191|unique:users,email,'.$user->id,
-            'password' => 'sometimes|string|min:8',
+            'password' => 'sometimes|required|string|min:8',
 
         ]);
         $user->update($request->all());

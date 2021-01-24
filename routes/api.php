@@ -20,3 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
  Route::apiResource('user',UsersController::class);
  Route::get('profile',[UsersController::class,'profile']);
+ Route::put('profile',[UsersController::class,'updateProfile']);
+
+
+ 

@@ -182,7 +182,7 @@
                                     <option value="">Select User Role</option>
                                     <option value="admin">Admin</option>
                                     <option value="user">Standart User</option>
-                                    <option value="auther">Author</option>
+                                    <option value="author">Author</option>
                                 </select>
                                 <has-error
                                     :form="form"
