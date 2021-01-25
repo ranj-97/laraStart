@@ -17,6 +17,9 @@ import { Form, HasError, AlertError } from 'vform'
 import VueProgressBar from 'vue-progressbar'
 import Swal from 'sweetalert2'
 // import { vue } from 'laravel-mix';
+import Gate from './Gate'
+Vue.prototype.$gate = new Gate(window.user);
+
 
 
 // CommonJS
@@ -60,6 +63,9 @@ let routes = [
     failedColor: 'red',
     height: '3px'
   })
+
+Vue.component('not-found', require('./components/notFoundPage.vue').default);
+Vue.component('pagination', require('laravel-vue-pagination'));
 
 
 /**

@@ -2,21 +2,16 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Dashboard Component</div>
-
-                    <div class="card-body">
-                        I'm an example component.
-                        Hellooo
-                    </div>
-                </div>
+               <not-found></not-found>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import notFoundPage from './notFoundPage.vue'
     export default {
+  components: { notFoundPage },
         mounted() {
             console.log('Component mounted.')
         }

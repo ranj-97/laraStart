@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="row mt-5">
+        <div class="row mt-5" v-if="$gate.isAdminOrAuthor()">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
@@ -28,7 +28,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="user in users" :key="user.id">
+                                <tr v-for="user in users.data" :key="user.id">
                                     <td>{{ user.id }}</td>
                                     <td>{{ toUpperCase(user.name) }} </td>
                                     <td>{{ toUpperCase(user.email) }}</td>
@@ -61,9 +61,19 @@
                         </table>
                     </div>
                     <!-- /.card-body -->
+                    <div class="card-footer">
+                        <pagination :data="users" :limit='2' :show-disabled="true" @pagination-change-page="getResults">
+                            <span slot="prev-nav">&lt; Previous</span>
+	<span slot="next-nav">Next &gt;</span>
+                        </pagination>
+
+                    </div>
                 </div>
                 <!-- /.card -->
             </div>
+        </div>
+        <div v-if="!$gate.isAdminOrAuthor()">
+            <not-found></not-found>
         </div>
 
         <!-- Modal -->
@@ -240,6 +250,12 @@ export default {
         };
     },
     methods: {
+        getResults(page = 1) {
+			axios.get('api/user?page=' + page)
+				.then(response => {
+					this.users = response.data;
+                });
+                },
       toUpperCase(data){
         return data.charAt(0).toUpperCase() + data.slice(1)
       },
@@ -304,7 +320,11 @@ export default {
             });
         },
         loadUser() {
-            axios.get("/api/user").then(({ data }) => (this.users = data.data));
+            if (this.$gate.isAdminOrAuthor()) {
+            // axios.get("/api/user").then(({ data }) => (this.users = data.data)); its make array
+                        axios.get("/api/user").then(({ data }) => (this.users = data));
+
+            }
         },
         createUser() {
             this.$Progress.start();
