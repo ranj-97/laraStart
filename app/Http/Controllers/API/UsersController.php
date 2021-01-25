@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\User;
-use Illuminate\Http\Request;
+// use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Request;
 
 class UsersController extends Controller
 {
@@ -67,8 +68,26 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        //
+      
     }
+    public function search()
+    {
+        if (Gate::allows('isAdmin') || Gate::allows('isAuthor') ) {
+        if ($search=Request::get('q')) {
+            $users=User::where(function($query) use ($search){
+            $query->where('name','LIKE',"%$search%")->orWhere('email','LIKE',"%$search%")
+            ->orWhere('type','Like',"%$search%");
+            })->paginate('10');
+            return $users;
+        }
+
+        
+            return User::paginate(10);
+        }
+
+    }
+
+
      /**
      * Display the specified resource.
      *

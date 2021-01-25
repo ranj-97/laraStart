@@ -50,7 +50,8 @@ const toast = Swal.mixin({
 let routes = [
     { path:'/dashboard', component:  require('./components/Dashboard.vue').default},
     { path:'/profile', component: require('./components/Profile.vue').default},
-    { path:'/users', component: require('./components/Users.vue').default}
+    { path:'/users', component: require('./components/Users.vue').default},
+    { path:'*', component: require('./components/notFoundPage.vue').default}
 
   ]
 
@@ -90,12 +91,13 @@ Vue.component('pagination', require('laravel-vue-pagination'));
 const app = new Vue({
     el: '#app',
     router,
-     methods: {
-    login () {
-      // Submit the form via a POST request
-      this.form.post('/login')
-        .then(({ data }) => { console.log(data) })
-    }
-  }
- 
+    data:{
+      search:'',
+    },
+    methods: {
+      searchIt: _.debounce(()=>{
+        Fire.$emit('searching');
+      },1000)
+      
+    },
 });

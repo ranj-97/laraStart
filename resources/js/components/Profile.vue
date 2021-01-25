@@ -16,9 +16,9 @@
                         style="background: url(https://adminlte.io/themes/dev/AdminLTE/dist/img/photo1.png) center center;"
                     >
                         <h3 class="widget-user-username text-left">
-                            Elizabeth Pierce
+                            {{toUpperCase(this.form.name)}}
                         </h3>
-                        <h5 class="widget-user-desc text-left">Web Designer</h5>
+                        <h5 class="widget-user-desc text-left">{{toUpperCase(this.form.type)}}</h5>
                     </div>
                     <div class="widget-user-image">
                         <img
@@ -31,28 +31,26 @@
                         <div class="row">
                             <div class="col-sm-4 border-right">
                                 <div class="description-block">
-                                    <h5 class="description-header">3,200</h5>
-                                    <span class="description-text">SALES</span>
+                                    <!-- <h5 class="description-header">3,200</h5>
+                                    <span class="description-text">SALES</span> -->
                                 </div>
                                 <!-- /.description-block -->
                             </div>
                             <!-- /.col -->
                             <div class="col-sm-4 border-right">
                                 <div class="description-block">
-                                    <h5 class="description-header">13,000</h5>
+                                    <!-- <h5 class="description-header">13,000</h5>
                                     <span class="description-text"
-                                        >FOLLOWERS</span
-                                    >
+                                        >FOLLOWERS</span> -->
                                 </div>
                                 <!-- /.description-block -->
                             </div>
                             <!-- /.col -->
                             <div class="col-sm-4">
                                 <div class="description-block">
-                                    <h5 class="description-header">35</h5>
+                                    <!-- <h5 class="description-header">35</h5>
                                     <span class="description-text"
-                                        >PRODUCTS</span
-                                    >
+                                        >PRODUCTS</span> -->
                                 </div>
                                 <!-- /.description-block -->
                             </div>
@@ -253,6 +251,9 @@ export default {
         console.log("Component mounted.");
     },
     methods: {
+        toUpperCase(data){
+        return data.charAt(0).toUpperCase() + data.slice(1)
+      },
       getProfilePhoto(){
         let photo=(this.form.photo.length >100)? this.form.photo:"img/profile/"+ this.form.photo;
 
